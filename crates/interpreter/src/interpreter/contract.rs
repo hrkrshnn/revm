@@ -1,6 +1,5 @@
 use super::analysis::{to_analysed, BytecodeLocked};
-use crate::primitives::{Address, Bytecode, Bytes, Env, TransactTo, B256, U256};
-use crate::CallContext;
+use crate::primitives::{Address, Bytecode, Bytes, Env, TransactTo, B256, U256, CallContext};
 
 #[derive(Clone, Debug, Default)]
 pub struct Contract {

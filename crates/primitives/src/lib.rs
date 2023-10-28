@@ -33,3 +33,91 @@ pub use result::*;
 pub use specification::*;
 pub use state::*;
 pub use utilities::*;
+
+/// Call schemes.
+#[derive(Clone, Copy, Eq, PartialEq, Debug)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum CallScheme {
+    /// `CALL`
+    Call,
+    /// `CALLCODE`
+    CallCode,
+    /// `DELEGATECALL`
+    DelegateCall,
+    /// `STATICCALL`
+    StaticCall,
+}
+
+/// CallContext of the runtime.
+#[derive(Clone, Debug, PartialEq, Eq)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct CallContext {
+    /// Execution address.
+    pub address: Address,
+    /// Caller of the EVM.
+    pub caller: Address,
+    /// The address the contract code was loaded from, if any.
+    pub code_address: Address,
+    /// Apparent value of the EVM.
+    pub apparent_value: U256,
+    /// The scheme used for the call.
+    pub scheme: CallScheme,
+}
+
+impl Default for CallContext {
+    fn default() -> Self {
+        CallContext {
+            address: Address::default(),
+            caller: Address::default(),
+            code_address: Address::default(),
+            apparent_value: U256::default(),
+            scheme: CallScheme::Call,
+        }
+    }
+}
+
+/// Config.
+#[derive(Clone, Copy, Eq, PartialEq, Debug)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum ConfigKind {
+    MultisigAddress = 1,
+    RequiredGas = 2,
+    SetBalance= 3,
+    DumpState = 4,
+    Unknown,
+}
+
+impl ConfigKind {
+    pub fn from_u8(value: u8) -> ConfigKind {
+        match value {
+            1 => ConfigKind::MultisigAddress,
+            2 => ConfigKind::RequiredGas,
+            3 => ConfigKind::SetBalance,
+            4 => ConfigKind::DumpState,
+            _ => ConfigKind::Unknown,
+        }
+    }
+}
+
+/// Config.
+#[derive(Clone, Copy, Eq, PartialEq, Debug)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub enum AdminCallKind {
+    EmergencyStop = 1,
+    ReloadRuntimeConfig = 2,
+    Mint = 3,
+    Burn = 4,
+    Unknown,
+}
+
+impl AdminCallKind {
+    pub fn from_u8(value: u8) -> AdminCallKind{
+        match value {
+            1 => AdminCallKind::EmergencyStop,
+            2 => AdminCallKind::ReloadRuntimeConfig,
+            3 => AdminCallKind::Mint,
+            4 => AdminCallKind::Burn,
+            _ => AdminCallKind::Unknown,
+        }
+    }
+}

@@ -676,6 +676,7 @@ impl<'a, GSPEC: Spec, DB: Database, const INSPECT: bool> EVMImpl<'a, GSPEC, DB, 
         let out = match precompile {
             Precompile::Standard(fun) => fun(input_data, gas.limit()),
             Precompile::Env(fun) => fun(input_data, gas.limit(), self.env()),
+            Precompile::Context(fun) => fun(input_data, gas.limit(), &inputs.context),
         };
         match out {
             Ok((gas_used, data)) => {
