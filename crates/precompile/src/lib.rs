@@ -1,4 +1,4 @@
-#![no_std]
+// #![no_std]
 #![warn(unused_crate_dependencies)]
 
 #[macro_use]
@@ -8,6 +8,7 @@ mod blake2;
 mod bn128;
 mod hash;
 mod identity;
+mod admin;
 #[cfg(feature = "c-kzg")]
 pub mod kzg_point_evaluation;
 mod modexp;
@@ -69,6 +70,7 @@ impl Default for Precompiles {
 pub enum Precompile {
     Standard(StandardPrecompileFn),
     Env(EnvPrecompileFn),
+    Context(ContextPrecompileFn),
 }
 
 impl fmt::Debug for Precompile {
@@ -76,6 +78,7 @@ impl fmt::Debug for Precompile {
         match self {
             Precompile::Standard(_) => f.write_str("Standard"),
             Precompile::Env(_) => f.write_str("Env"),
+            Precompile::Context(_) => f.write_str("Context"),
         }
     }
 }
@@ -130,6 +133,7 @@ impl Precompiles {
                 hash::SHA256,
                 hash::RIPEMD160,
                 identity::FUN,
+                admin::ADMIN,
             ]
             .into_iter()
             .map(From::from)

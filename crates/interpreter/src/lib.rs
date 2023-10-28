@@ -28,3 +28,5 @@ pub use interpreter::{
 
 #[doc(inline)]
 pub use revm_primitives as primitives;
+
+pub use primitives::{CallContext, CallScheme};
